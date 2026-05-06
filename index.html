@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgentFlow — AI Workflow Builder</title>
+  <meta name="description" content="N8N inspired drag and drop AI workflow builder">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Drawflow CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">
+        <span class="logo-icon">♾️</span>
+        <span class="logo-text">AgentFlow</span>
+      </div>
+      <div class="workflow-name">Yeni İşlem Hattı <span class="badge">Taslak</span></div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-secondary" id="clearBtn">🧹 Temizle</button>
+      <button class="btn-primary" id="exportBtn">🚀 Deploy / Export JSON</button>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="workspace">
+    
+    <!-- Left Sidebar (Nodes Palette) -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h3>Düğümler</h3>
+        <p>Tuvale sürükleyin</p>
+      </div>
+
+      <div class="node-list">
+        <!-- Trigger Node -->
+        <div class="drag-item node-trigger" draggable="true" ondragstart="drag(event)" data-node="trigger">
+          <div class="node-icon">⚡</div>
+          <div class="node-info">
+            <span class="node-title">Tetikleyici</span>
+            <span class="node-desc">İşlemi başlatır</span>
+          </div>
+        </div>
+
+        <!-- LLM Node -->
+        <div class="drag-item node-llm" draggable="true" ondragstart="drag(event)" data-node="llm">
+          <div class="node-icon">🧠</div>
+          <div class="node-info">
+            <span class="node-title">LLM Modeli</span>
+            <span class="node-desc">Qwen, Llama, GPT</span>
+          </div>
+        </div>
+
+        <!-- Agent Node -->
+        <div class="drag-item node-agent" draggable="true" ondragstart="drag(event)" data-node="agent">
+          <div class="node-icon">🕵️‍♂️</div>
+          <div class="node-info">
+            <span class="node-title">AI Ajanı</span>
+            <span class="node-desc">Araç kullanan ajan</span>
+          </div>
+        </div>
+
+        <!-- Output Node -->
+        <div class="drag-item node-output" draggable="true" ondragstart="drag(event)" data-node="output">
+          <div class="node-icon">📤</div>
+          <div class="node-info">
+            <span class="node-title">Çıktı Hedefi</span>
+            <span class="node-desc">Sonucu dışa aktar</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Drawflow Canvas Area -->
+    <div class="canvas-area">
+      <div id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
+
+    <!-- Right Sidebar (Properties Panel) -->
+    <aside class="properties-panel" id="propPanel">
+      <div class="panel-header">
+        <h3 id="propTitle">Düğüm Ayarları</h3>
+        <button id="closePropBtn" class="close-btn">✕</button>
+      </div>
+      <div class="panel-body" id="propBody">
+        <div class="empty-state">Düzenlemek için bir düğüm seçin.</div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Toast Notification System -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

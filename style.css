@@ -1,0 +1,522 @@
+/* ─── CSS Variables & Reset ─── */
+:root {
+  --bg-app: #0e0e11;
+  --bg-sidebar: #15151a;
+  --bg-panel: #1b1b22;
+  --bg-node: #21212a;
+  
+  --border: #2f2f3c;
+  --border-hover: #4b4b5e;
+  
+  --text-main: #f3f3f6;
+  --text-muted: #8b8b9d;
+  
+  --accent: #ff6d5a; /* n8n-like coral/orange accent */
+  --accent-hover: #ff8b7c;
+  --accent-transparent: rgba(255, 109, 90, 0.15);
+  
+  --node-trigger: #10b981;
+  --node-llm: #8b5cf6;
+  --node-agent: #3b82f6;
+  --node-output: #f59e0b;
+
+  --font-main: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  --radius-sm: 6px;
+  --radius: 10px;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ─── Top Navigation Bar ─── */
+.topbar {
+  height: 60px;
+  background-color: var(--bg-sidebar);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 100;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.5px;
+  color: var(--text-main);
+}
+
+.logo-icon {
+  color: var(--accent);
+  font-size: 22px;
+}
+
+.workflow-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-left: 24px;
+  border-left: 1px solid var(--border);
+}
+
+.badge {
+  background-color: var(--border);
+  color: var(--text-muted);
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.topbar-right {
+  display: flex;
+  gap: 12px;
+}
+
+button {
+  font-family: var(--font-main);
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  box-shadow: 0 0 16px var(--accent-transparent);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-panel);
+  color: var(--text-main);
+  border-color: var(--border-hover);
+}
+
+/* ─── Main Workspace ─── */
+.workspace {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 60px);
+}
+
+/* ─── Sidebar Palette ─── */
+.sidebar {
+  width: 280px;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+}
+
+.sidebar-header {
+  padding: 20px 24px 16px;
+}
+
+.sidebar-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.sidebar-header p {
+  font-size: 12px;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.node-list {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.drag-item {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+.drag-item:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.node-icon {
+  width: 32px;
+  height: 32px;
+  background-color: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+}
+
+.node-trigger .node-icon { color: var(--node-trigger); background-color: rgba(16, 185, 129, 0.1); }
+.node-llm .node-icon { color: var(--node-llm); background-color: rgba(139, 92, 246, 0.1); }
+.node-agent .node-icon { color: var(--node-agent); background-color: rgba(59, 130, 246, 0.1); }
+.node-output .node-icon { color: var(--node-output); background-color: rgba(245, 158, 11, 0.1); }
+
+.node-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.node-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.node-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ─── Canvas Area ─── */
+.canvas-area {
+  flex: 1;
+  position: relative;
+  background-color: var(--bg-app);
+}
+
+#drawflow {
+  width: 100%;
+  height: 100%;
+  /* Dotted Background Grid */
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ─── Custom Drawflow Styles (n8n Compact Nodes) ─── */
+.drawflow .drawflow-node {
+  background: var(--bg-node);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+  padding: 0;
+  width: 200px;
+  min-height: 50px;
+  transition: box-shadow 0.2s, border-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.drawflow .drawflow-node:hover {
+  border-color: var(--border-hover);
+}
+
+.drawflow .drawflow-node.selected {
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 0 2px rgba(255, 109, 90, 0.2), var(--shadow-sm);
+}
+
+/* Node Header (Compact) */
+.drawflow .drawflow-node .title-box {
+  padding: 12px 14px;
+  font-weight: 500;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.drawflow .drawflow-node .node-icon-wrapper {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.drawflow .drawflow-node .node-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.drawflow .drawflow-node .node-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.drawflow .drawflow-node .node-subtitle {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Dynamic Colors */
+.drawflow .drawflow-node.trigger .node-icon-wrapper { background-color: rgba(16, 185, 129, 0.15); color: var(--node-trigger); }
+.drawflow .drawflow-node.llm .node-icon-wrapper { background-color: rgba(139, 92, 246, 0.15); color: var(--node-llm); }
+.drawflow .drawflow-node.agent .node-icon-wrapper { background-color: rgba(59, 130, 246, 0.15); color: var(--node-agent); }
+.drawflow .drawflow-node.output .node-icon-wrapper { background-color: rgba(245, 158, 11, 0.15); color: var(--node-output); }
+
+/* Hide .box in canvas, we only use it for data rendering if needed, but actually we will remove form elements */
+.drawflow .drawflow-node .box {
+  display: none;
+}
+
+/* Node Delete Button */
+.drawflow .drawflow-node .drawflow-delete {
+  background: var(--bg-sidebar);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  line-height: 18px;
+  font-size: 10px;
+  top: -10px;
+  right: -10px;
+  transition: all 0.2s;
+}
+
+.drawflow .drawflow-node .drawflow-delete:hover {
+  background: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+}
+
+/* Connection Lines */
+.drawflow .connection .main-path {
+  stroke: var(--text-muted);
+  stroke-width: 3px;
+}
+
+.drawflow .connection .main-path:hover {
+  stroke: var(--accent);
+}
+
+/* Input / Output Ports */
+.drawflow .drawflow-node .input,
+.drawflow .drawflow-node .output {
+  background-color: var(--bg-node);
+  border: 2px solid var(--text-muted);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.drawflow .drawflow-node .input:hover,
+.drawflow .drawflow-node .output:hover {
+  border-color: var(--accent);
+  background-color: var(--accent);
+  transform: scale(1.2);
+}
+
+/* ─── Toast System ─── */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1000;
+}
+
+.toast {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 300px;
+  animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toast.success { border-left-color: var(--node-trigger); }
+.toast.info { border-left-color: var(--node-agent); }
+
+.toast-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.toast-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* ─── Right Properties Panel ─── */
+.properties-panel {
+  position: absolute;
+  top: 0;
+  right: -360px; /* Hidden by default */
+  width: 360px;
+  height: 100%;
+  background-color: var(--bg-sidebar);
+  border-left: 1px solid var(--border);
+  z-index: 90;
+  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: -8px 0 24px rgba(0,0,0,0.2);
+}
+
+.properties-panel.open {
+  right: 0;
+}
+
+.panel-header {
+  height: 60px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.panel-header h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.close-btn {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.close-btn:hover {
+  color: var(--text-main);
+}
+
+.panel-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.empty-state {
+  color: var(--text-muted);
+  font-size: 13px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* Form Styles for Right Panel */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  padding: 10px 12px;
+  font-family: var(--font-main);
+  font-size: 13px;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
